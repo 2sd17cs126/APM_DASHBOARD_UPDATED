@@ -1,10 +1,218 @@
-
-<nav class="navbar navbar-dark bg-primary" mat-tab-nav-bar [color]="'primary'" >
- 
-  <a  class="link-light" mat-tab-link *ngFor="let link of links"
-     [routerLink]="link" routerLinkActive #rla="routerLinkActive"
-     > {{link}} </a>
-  
+<!--
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+<nav >
+  <div  class="nav nav-tabs bg-primary" id="nav-tab" role="tablist">
+    <a class="navbar-brand" ></a>
+    <img src="data:image/png;base64,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" width="30" height="40" alt="">
+    APM DashBoard
+    <a class="nav-link link-light nav-item" id="nav-performance-tab" data-bs-toggle="tab"  role="tab" aria-controls="nav-performance" aria-selected="true" [routerLink]="'performance'" aria-current="location"><i class="bi bi-alt"></i>&nbsp;Performance</a>
+    <a class="nav-link link-light nav-item" id="nav-automation-tab" data-bs-toggle="tab"  role="tab" aria-controls="nav-automation" aria-selected="false" [routerLink]="'automation'"><i class="bi bi-speedometer2"></i>&nbsp;Automation</a>
+   
+  </div>
 </nav>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade " id="performance" role="tabpanel" aria-labelledby="performance-tab"></div>
+  <div class="tab-pane fade" id="automation" role="tabpanel" aria-labelledby="automation-tab"> this is me</div>
+   </div>
+
+
 
 <router-outlet></router-outlet>
+
+-->
+
+
+<style>
+
+	@import url('https://fonts.googleapis.com/css?family=Roboto');
+	
+	body{
+		font-family: 'Roboto', sans-serif;
+	}
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	i {
+		margin-right: 10px;
+	}
+	/*----------bootstrap-navbar-css------------*/
+	.navbar-logo{
+		padding: 15px;
+		color: #fff;
+	}
+	.navbar-mainbg{
+		background-color: #5161ce;
+		padding: 0px;
+	}
+	#navbarSupportedContent{
+		overflow: hidden;
+		position: relative;
+	}
+	#navbarSupportedContent ul{
+		padding: 0px;
+		margin: 0px;
+	}
+	#navbarSupportedContent ul li a i{
+		margin-right: 10px;
+	}
+	#navbarSupportedContent li {
+		list-style-type: none;
+		float: left;
+	}
+	#navbarSupportedContent ul li a{
+		color: rgba(255,255,255,0.5);
+		text-decoration: none;
+		font-size: 15px;
+		display: block;
+		padding: 20px 20px;
+		transition-duration:0.6s;
+		transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		position: relative;
+	}
+	#navbarSupportedContent>ul>li.active>a{
+		color: #5161ce;
+		background-color: transparent;
+		transition: all 0.7s;
+	}
+	#navbarSupportedContent a:not(:only-child):after {
+		content: "\f105";
+		position: absolute;
+		right: 20px;
+		top: 10px;
+		font-size: 14px;
+		font-family: "Font Awesome 5 Free";
+		display: inline-block;
+		padding-right: 3px;
+		vertical-align: middle;
+		font-weight: 900;
+		transition: 0.5s;
+	}
+	#navbarSupportedContent .active>a:not(:only-child):after {
+		transform: rotate(90deg);
+	}
+	.hori-selector{
+		display:inline-block;
+		position:absolute;
+		height: 100%;
+		top: 0px;
+		left: 0px;
+		transition-duration:0.6s;
+		transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+		background-color: #fff;
+		border-top-left-radius: 15px;
+		border-top-right-radius: 15px;
+		margin-top: 10px;
+	}
+	.hori-selector .right,
+	.hori-selector .left{
+		position: absolute;
+		width: 25px;
+		height: 25px;
+		background-color: #fff;
+		bottom: 10px;
+	}
+	.hori-selector .right{
+		right: -25px;
+	}
+	.hori-selector .left{
+		left: -25px;
+	}
+	.hori-selector .right:before,
+	.hori-selector .left:before{
+		content: '';
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		background-color: #5161ce;
+	}
+	.hori-selector .right:before{
+		bottom: 0;
+		right: -25px;
+	}
+	.hori-selector .left:before{
+		bottom: 0;
+		left: -25px;
+	}
+	
+	
+	@media(min-width: 992px){
+		.navbar-expand-custom {
+			-ms-flex-flow: row nowrap;
+			flex-flow: row nowrap;
+			-ms-flex-pack: start;
+			justify-content: flex-start;
+		}
+		.navbar-expand-custom .navbar-nav {
+			-ms-flex-direction: row;
+			flex-direction: row;
+		}
+		.navbar-expand-custom .navbar-toggler {
+			display: none;
+		}
+		.navbar-expand-custom .navbar-collapse {
+			display: -ms-flexbox!important;
+			display: flex!important;
+			-ms-flex-preferred-size: auto;
+			flex-basis: auto;
+		}
+	}
+	
+	
+	@media (max-width: 991px){
+		#navbarSupportedContent ul li a{
+			padding: 12px 30px;
+		}
+		.hori-selector{
+			margin-top: 0px;
+			margin-left: 10px;
+			border-radius: 0;
+			border-top-left-radius: 25px;
+			border-bottom-left-radius: 25px;
+		}
+		.hori-selector .left,
+		.hori-selector .right{
+			right: 10px;
+		}
+		.hori-selector .left{
+			top: -25px;
+			left: auto;
+		}
+		.hori-selector .right{
+			bottom: -25px;
+		}
+		.hori-selector .left:before{
+			left: -25px;
+			top: -25px;
+		}
+		.hori-selector .right:before{
+			bottom: -25px;
+			left: -25px;
+		}
+	}
+	</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+<nav class="navbar navbar-expand-custom navbar-mainbg">
+  <a class="navbar-brand navbar-logo" href="#">Apm Dashboard</a>
+  <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <i class="fas fa-bars text-white"></i>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+          <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+          <li class="nav-item">
+              <a class="nav-link" [routerLink]="'performance'"><i class="bi bi-alt"></i>&nbsp;Performance</a>
+          </li>
+          <li class="nav-item active">
+              <a class="nav-link" [routerLink]="'automation'"><i class="bi bi-speedometer2"></i>&nbsp;Automation</a>
+          </li>
+          
+      </ul>
+  </div>
+</nav>
+<router-outlet></router-outlet>
+
+
+
+
